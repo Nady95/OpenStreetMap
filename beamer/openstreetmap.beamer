@@ -1,0 +1,219 @@
+---
+title: La cartographie avec OpenStreetMap
+subtitle: Institut Galilée - Master 2 PLS
+author: Jones Magloire
+date: 02 Novembre 2020
+theme: metropolis
+toc: true
+section-titles: false
+header-includes: |
+  \newcommand{\hideFromPandoc}[1]{#1}
+  \usepackage{fourier}
+  \hideFromPandoc{ \let\Begin\begin \let\End\end }
+  \metroset{block=fill}
+  \newcommand{\sectionimage}{Foo}
+  \newcommand{\imagedirectory}{openstreetmap-images}
+  \AtBeginEnvironment{block}{\setbeamercolor{itemize item}{fg=blueJawg}}
+  \AtBeginEnvironment{block}{\setbeamercolor{itemize subitem}{fg=blueJawg}}
+  \usepackage{dirtytalk}
+build: pandoc -st beamer openstreetmap.beamer -o openstreetmap.pdf
+---
+
+# OSM
+
+---
+
+## OpenStreetMap
+
+> No one knows everything, everyone knows something, all knowledge resides in humanity...
+- Pierre Levy
+
+## Le projet OpenStreetMap
+
+\begin{block}{Le projet OpenStreetMap}
+  \begin{itemize}
+    \item Projet de cartographie mondial
+    \item Fondé en 2004 en Angleterre
+    \item Projet collaboratif
+    \item Fondation à but non lucratif
+    \item Chaque pays a sa communauté
+    \item Organisation de State Of The Map (conférences modiales)
+  \end{itemize}
+\end{block}
+
+## La donnée OSM
+
+\begin{block}{La donnée OSM}
+  \begin{itemize}
+    \item Projet de cartographie mondial
+    \item Node/Way/Relation
+    \item Tags clé/valeur
+    \item Distribué au format XML/PBF (600Go/54Go)
+    \item Parution complète hebdomadaire => <http://planet.osm.org>
+    \item Changements toutes les minutes/heures/jours => <http://planet.osm.org/replication>
+    \item Open Database License (ODbL)
+  \end{itemize}
+\end{block}
+
+## La carte OSM
+
+\begin{block}{La carte OSM}
+  \begin{itemize}
+    \item Fond de carte par défaut => <https://osm.org>
+    \item Éditable via iD (osm.org), JOSM (desktop), OSM Contributors (Android), Vespucci (Android)...
+    \item Un wiki dédié => <https://wiki.osm.org/>
+    \item Attributions obligatoires `© les contributeurs d’OpenStreetMap`
+    \item Fond de carte orienté contribution
+  \end{itemize}
+\end{block}
+
+## Les providers OSM
+
+\begin{exampleblock}{Les providers OSM}
+  \begin{itemize}
+    \item **Jawg**Maps (France)
+    \item Mapbox (USA)
+    \item Carto (USA)
+    \item Geofabrik (Allemagne)
+    \item Stamen (USA)
+    \item Thunderforest (USA)
+    \item **map**tiler/OpenMapTiles (Suisse)
+  \end{itemize}
+\end{exampleblock}
+
+## Qui utilise des cartes OSM ?
+
+\begin{alertblock}{Qui utilise des cartes OSM ?}
+  \begin{itemize}
+    \item Facebook et Instagram
+    \item Snapshat (utilise Mapbox)
+    \item Wikipedia (via Wikimedia)
+    \item Microsoft (via Bing)
+  \end{itemize}
+\end{alertblock}
+
+# Qu'est-ce qu'une carte ?
+
+## Qu'est-ce qu'une carte ?
+
+\begin{block}{Composition}
+  \begin{itemize}
+    \item De la donnée géocontextualisée
+    \item Node => Noms Villes/Pays, POIs (Point Of Interest), Numéros de rues, Arbres...
+    \item Lignes => Routes, Rivières, Frontières...
+    \item Polygons => Bâtiments, Fleuves/Lacs, Forêts, Frontières
+  \end{itemize}
+\end{block}
+
+\begin{block}{Affichage}
+  \begin{itemize}
+    \item Rendu différent pour chaque type d'éléments
+    \item Utilisation de \say{tuiles} raster ou vectorielle
+  \end{itemize}
+\end{block}
+
+## Qu'est-ce qu'une carte ?
+
+\includegraphics[width=\textwidth,keepaspectratio]{./openstreetmap-images/tiles-3d.png}
+
+## Les services cartographiques
+
+- Fond de carte (personalisé ou non, flux WMTS ou WMS)
+- Geocoding (Nom de ville <=> coordonnées)
+- Routing (Route de A à B)
+- Élevation (Altitude d'un point ou d'une série de points)
+- Système d'Information Géographique (SIG)
+
+# Création d'un serveur de tuiles
+
+## Création d'un serveur de tuiles
+
+- Format de l'API: `/{z}/{x}/{y}.png`
+- Mode simplifié: SVG du monde => png
+- Base de code disponible => <https://github.com/Joxit/IG-Master2/tree/master/osm>
+- Zoom 0: $2^0 = 1$ tuile 256x256
+- Zoom 1: $2^2 = 4$ tuiles
+- Zoom 2: $2^4 = 16$ tuiles
+- Zoom n: $2^{2n}$ tuiles
+
+## Création d'un serveur de tuiles{.standout}
+
+\centering\Huge{\href{https://joxit.dev/IG-Master2/osm\#le-serveur-de-tuiles}{Live Coding!!!}}
+
+## Affichage d'une carte
+
+- Utilisation de Mapbox GL JS
+- Source Raster (png)
+- Un fichier `index.html` static
+
+## Affichage d'une carte{.standout}
+
+\centering\Huge{\href{https://joxit.dev/IG-Master2/osm\#afficher-une-carte}{Live Coding!!!}}
+
+# Création d'un serveur de POIs
+
+## Création d'un serveur de POIs
+
+- Doit renvoyer un GeoJSON correctement formé: <https://geojson.org/>
+- Éléments simples (`FeatureCollection` de `Points`)
+- Exemple de donnée disponible => <https://github.com/Joxit/IG-Master2/tree/master/osm/osm-core/src/main/resources/>
+- Renvoyer les données via votre API
+- Ajout des éléments sur la carte
+
+## Création d'un serveur de POIs{.standout}
+
+\centering\Huge{\href{https://joxit.dev/IG-Master2/osm\#ajouter-des-points}{Live Coding!!!}}
+
+# Ajout de tuiles vectorielles
+
+## Ajout de tuiles vectorielles
+
+- Création d'un compte sur le lab: <https://jawg.io/lab/>
+- Remplacement du style
+
+## Ajout de tuiles vectorielles{.standout}
+
+\centering\Huge{\href{https://joxit.dev/IG-Master2/osm\#ajout-dune-source-de-tuiles-vectorielles}{Live Coding!!!}}
+
+# Ajout d'un tracé d'itinéraire
+
+## Ajout d'un tracé d'itinéraire
+
+- Appeller l'API d'itinéraire Jawg: <https://www.jawg.io/docs/apidocs/routing/osrm/>
+- Sélectionner le départ et l'arrivé du tracé grâce à des cliques sur la carte
+- Afficher l'itinéraire sur la carte
+
+## Ajout d'un tracé d'itinéraire{.standout}
+
+\centering\Huge{\href{https://joxit.dev/IG-Master2/osm\#ajout-dun-itinéraire}{Live Coding!!!}}
+
+\begin{note}
+%# Ajout du geocoding
+
+%## Ajout du geocoding
+
+%- Ajout d'une barre de recherche
+%- Connecter la barre de recherche avec l'API
+%- Quand on clique sur la carte, remplir l'adresse grâce au reverse geocoding
+\end{note}
+
+# Conclusion
+
+## Conclusion
+
+\begin{block}{Implémentations}
+  \begin{itemize}
+    \item Fond de carte
+    \item Service de POIs
+    \item UI pour le fond de carte
+    \item UI pour les POIs
+    \item UI pour l'itinéraire
+    %\item UI pour le géocoding
+  \end{itemize}
+\end{block}
+
+---
+
+## Conclusion {.standout}
+
+\centering\Huge{Question ?}
